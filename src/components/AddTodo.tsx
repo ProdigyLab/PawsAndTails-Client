@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { useAppDispatch } from "../redux/hook";
+import { UseAppDispatch } from "../redux/hook";
 import { addTodo } from "../redux/actions/todoActions";
 
 const AddTodo: React.FC = () => {
   const [text, setText] = useState("");
-  const dispatch = useAppDispatch();
+  const dispatch = UseAppDispatch();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

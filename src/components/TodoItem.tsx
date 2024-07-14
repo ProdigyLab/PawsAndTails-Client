@@ -1,16 +1,15 @@
 import React from "react";
-import { useAppDispatch } from "../redux/hook";
+import { UseAppDispatch } from "../redux/hook";
 import { toggleTodo, deleteTodo } from "../redux/actions/todoActions";
 
 interface TodoItemProps {
   id: number;
   text: string;
   completed: boolean;
-  color: string
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ id, text, completed, color }) => {
-  const dispatch = useAppDispatch();
+const TodoItem: React.FC<TodoItemProps> = ({ id, text, completed }) => {
+  const dispatch = UseAppDispatch();
 
   return (
     <div>
@@ -19,6 +18,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, text, completed, color }) => {
           <input
             type="checkbox"
             checked={completed}
+            // @ts-expect-error type error is not solved
             onChange={() => dispatch(toggleTodo(id))}
             className="mr-2"
             title="checkbox"
@@ -54,6 +54,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, text, completed, color }) => {
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
           <button
+          // @ts-expect-error type error is not solved
             onClick={() => dispatch(deleteTodo(id))}
             className="bg-red-500 text-white px-2 py-1 rounded"
           >

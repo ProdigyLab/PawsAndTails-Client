@@ -1,11 +1,17 @@
 "use client"
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/reducers/rootReducer';
 import TodoItem from './TodoItem';
+import { UseAppSelector } from '@/redux/hook';
 
-const TodoList: React.FC = () => {
-  const todos = useSelector((state: RootState) => state.todosRootReducer.todosReducer);
+interface TodoItemProps {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+const TodoList = () => {
+  const todos: TodoItemProps[] = UseAppSelector((state) => state.todoReducer.todo_Root_Reducer.todosReducer);
+console.log("todos", todos);
 
   return (
     <div className="flex justify-center items-center">
@@ -18,8 +24,8 @@ const TodoList: React.FC = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {todos.map(todo => (
-            <TodoItem key={todo.id} {...todo} />
+          {todos.map((todo: TodoItemProps, index) => (
+            <TodoItem key={index} {...todo} />
           ))}
         </tbody>
       </table>

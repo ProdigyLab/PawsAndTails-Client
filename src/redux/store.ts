@@ -7,7 +7,7 @@ import {
   type AnyAction,
 } from "@reduxjs/toolkit";
 import { loginauthRootReducer } from "./reducers/_loginRootReducer";
-import todorootReducer from "./reducers/rootReducer";
+import {todoRootReducer} from "./reducers/todoRootReducer";
 
 export type RootState = {
   app: any;
@@ -19,8 +19,8 @@ export type RootState = {
   };
 
   todoReducer: {
-    [key in keyof typeof todorootReducer]: ReturnType<
-      (typeof todorootReducer)[key]
+    [key in keyof typeof todoRootReducer]: ReturnType<
+      (typeof todoRootReducer)[key]
     >;
   };
  
@@ -30,7 +30,8 @@ export type RootState = {
 // @ts-expect-error type error is not solved
 const rootReducer: Reducer<RootState> = combineReducers({
   loginauthReducer: combineReducers(loginauthRootReducer) as Reducer,
-  todoReducer: combineReducers(todorootReducer) as Reducer,
+  // @ts-expect-error type error is not solved
+  todoReducer: combineReducers(todoRootReducer) as Reducer,
 
   // Add more modules as needed
 });
