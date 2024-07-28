@@ -4,11 +4,12 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
 const initialState: IRegisterAuthReducer = {
 registerInput: {
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
+  strUserName: "",
+  strFirstName: "",
+  strLastName: "",
+  strPhone: "",
+  strEmail: "",
+  strPassword: "",
 },
   isSubmitting: false,
   errors: "",
