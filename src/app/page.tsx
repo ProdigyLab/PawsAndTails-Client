@@ -5,6 +5,7 @@ import AddTodo from "@/components/AddTodo";
 import TodoList from "@/components/TodoList";
 import Image from "next/image";
 import NavBarComponent from "@/components/ui/features/Navbar";
+import PetCardComponent from "@/components/ui/features/PetCard";
 
 export default function Home() {
   return (
@@ -22,8 +23,9 @@ export default function Home() {
       </Head>
       <main>
         <NavBarComponent/>
-        <AddTodo />
-        <TodoList />
+        <PetCardComponent/>
+        {/* <AddTodo />
+        <TodoList /> */}
       </main>
     </>
   );
