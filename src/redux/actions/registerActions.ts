@@ -10,23 +10,34 @@ export const handleChangeRegisterInput =
     dispatch({ type: Types.CHANGE_REGISTER_INPUT, payload: data });
   };
 
-  export const submitRegisterForm = (formData: Record<string, string | number>) => async (dispatch: Dispatch) => {
+export const submitRegisterForm =
+  (formData: Record<string, string | number>) => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post("http://localhost:3000/users", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      
+      const response = await axios.post(
+        "http://localhost:3000/users",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       console.log("response", response);
-      
+
       if (!response.data) {
         throw new Error("Network response was not ok");
       }
-      
+
       const result = response.data;
       dispatch({ type: Types.REGISTER_SUCCESS, payload: result });
-    } catch (error) {
-      dispatch({ type: Types.REGISTER_FAILURE, payload: error.message });
+    } catch (error: unknown) {
+      if (typeof error === "string") {
+        dispatch({ type: Types.REGISTER_FAILURE, payload: error });
+      } else if (error instanceof Error) {
+        dispatch({ type: Types.REGISTER_FAILURE, payload: error.message });
+      } else {
+        dispatch({ type: Types.REGISTER_FAILURE, payload: "Unknown error" });
+      }
     }
   };
