@@ -19,3 +19,6 @@ export interface IRegisterAuthReducer {
   };
   errors: any
 }
+export interface ISearchReducer {
+  searchTerm: string;
+}

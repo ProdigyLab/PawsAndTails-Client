@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Input, Space } from "antd";
+import SearchBarComponent from "./searchBar";
 
 const { Search } = Input;
 const NavBarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
-    console.log(info?.source, value);
   // useEffect(() => {
   //     const handleScroll = () => {
   //       setIsScrolled(window.scrollY > (showBanner ? 45 : 0));
@@ -38,6 +37,7 @@ const NavBarComponent = () => {
   //       window.removeEventListener("scroll", handleScroll);
   //     };
   //   }, [showBanner]);
+
   return (
     <div>
       <div className=" grid grid-cols-3 ">
@@ -49,19 +49,13 @@ const NavBarComponent = () => {
             height={90}
           />
         </div>
-        <div className=" flex justify-evenly items-center cursor-pointer ">
+        <div className="flex justify-evenly items-center cursor-pointer ">
           <div>About Us</div>
           <div>Services</div>
           <div>Contact Us</div>
         </div>
         <div className=" flex justify-center items-center">
-          <div>
-            <Search
-              placeholder="Search your pets"
-              onSearch={onSearch}
-              enterButton
-            />
-          </div>
+          <SearchBarComponent />
         </div>
       </div>
     </div>

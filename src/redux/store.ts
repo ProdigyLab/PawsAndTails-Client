@@ -9,6 +9,7 @@ import {
 import { loginauthRootReducer } from "./reducers/_loginRootReducer";
 import { registerAuthRootReducer } from "./reducers/_registerRootReducer";
 import {todoRootReducer} from "./reducers/todoRootReducer";
+import { searchRootReducer } from "./reducers/_searchRootReducer";
 
 export type RootState = {
   app: any;
@@ -28,6 +29,12 @@ export type RootState = {
       (typeof todoRootReducer)[key]
     >;
   };
+  
+  searchReducer: {
+    [key in keyof typeof searchRootReducer]: ReturnType<
+      (typeof searchRootReducer)[key]
+    >;
+  };
  
 };
 
@@ -37,8 +44,9 @@ const rootReducer: Reducer<RootState> = combineReducers({
   loginauthReducer: combineReducers(loginauthRootReducer) as Reducer,
   // @ts-expect-error type error is not solved
   todoReducer: combineReducers(todoRootReducer) as Reducer,
-  registerAuthReducer: combineReducers(registerAuthRootReducer) as Reducer
+  registerAuthReducer: combineReducers(registerAuthRootReducer) as Reducer,
   // Add more modules as needed
+  searchReducer: combineReducers(searchRootReducer) as Reducer,
 });
 
 const store = configureStore({
