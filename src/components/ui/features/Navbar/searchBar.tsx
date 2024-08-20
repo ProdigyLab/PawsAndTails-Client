@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 import { useDispatch } from "react-redux";
 import { useDebounce } from "@/hooks/useDebounce";
 import { setSearchTerm } from "@/redux/actions/searchActions";
@@ -36,7 +36,7 @@ const SearchBarComponent = () => {
         // onSearch={onSearch}
         // enterButton
         onClick={handleSearchClick}
-        suffix={<SearchOutlined />}
+        // suffix={<SearchOutlined />}
       />
       {/* Full-Screen Search Overlay */}
       {isSearchVisible && (

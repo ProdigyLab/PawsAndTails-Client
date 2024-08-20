@@ -1,9 +1,6 @@
 "use client";
 import Head from "next/head";
 import metaData from "../../public/meta.json";
-import AddTodo from "@/components/AddTodo";
-import TodoList from "@/components/TodoList";
-import Image from "next/image";
 import NavBarComponent from "@/components/ui/features/Navbar";
 import PetCardComponent from "@/components/ui/features/PetCard";
 

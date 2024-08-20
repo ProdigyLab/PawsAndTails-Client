@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { Card, Modal } from "antd";
 import Image from "next/image";
 import usePetCardUtils from "./usePetCard.utils";

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Input, Space } from "antd";
+import { Input } from "antd";
 import SearchBarComponent from "./searchBar";
 
-const { Search } = Input;
+// const { Search } = Input;
 const NavBarComponent = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
