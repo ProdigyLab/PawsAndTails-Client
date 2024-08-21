@@ -3,6 +3,7 @@ import Head from "next/head";
 import metaData from "../../public/meta.json";
 import NavBarComponent from "@/components/ui/features/Navbar";
 import PetCardComponent from "@/components/ui/features/PetCard";
+import FooterComponent from "@/components/ui/features/Footer";
 
 export default function Home() {
   return (
@@ -19,10 +20,12 @@ export default function Home() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </Head>
       <main>
-        <NavBarComponent/>
+        {/* <NavBarComponent/> */}
+        
         <PetCardComponent/>
         {/* <AddTodo />
         <TodoList /> */}
+      <FooterComponent/>
       </main>
     </>
   );

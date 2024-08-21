@@ -15,7 +15,7 @@ const PetCardComponent = () => {
   } = usePetCardUtils();
 
   return (
-    <div className="mt-10">
+    <div className="pt-20 min-h-screen">
       <div>
         <h1 className="text-center font-medium uppercase">Our Pet Shop</h1>
       </div>
@@ -49,7 +49,7 @@ const PetCardComponent = () => {
 
           <Modal
             title={selectedPet?.name}
-            visible={isModalVisible}
+            open={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
           >

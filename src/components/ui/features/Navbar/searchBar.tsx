@@ -5,7 +5,10 @@ import { useDispatch } from "react-redux";
 import { useDebounce } from "@/hooks/useDebounce";
 import { setSearchTerm } from "@/redux/actions/searchActions";
 
-const SearchBarComponent = () => {
+type PropsType = {
+  isDarkMode: boolean;
+}
+const SearchBarComponent = ({ isDarkMode }: PropsType) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const dispatch = useDispatch();
@@ -34,7 +37,6 @@ const SearchBarComponent = () => {
       <SearchOutlined
         placeholder="Search your pets"
         // onSearch={onSearch}
-        // enterButton
         onClick={handleSearchClick}
         // suffix={<SearchOutlined />}
       />
@@ -48,13 +50,20 @@ const SearchBarComponent = () => {
               onChange={handleInputChange}
               // onSearch={onSearch}
               autoFocus
-              className="text-center text-white bg-transparent text-xl placeholder-white"
+              className = {`text-center text-white bg-transparent text-xl placeholder-white ${
+                isDarkMode ? 'text-red-500' : 'text-green-500'
+              }`}
+              
               bordered={false}
               maxLength={12}
+              style={{
+                background: isDarkMode ? '#001529' : '#fff',
+                color: isDarkMode ? '#fff' : '#001529',
+              }}
             />
             <CloseOutlined
               onClick={handleCloseSearch}
-              className="absolute  text-white text-2xl cursor-pointer"
+              className="absolute top-0 right-0 px-2  text-white text-2xl cursor-pointer"
             />
           </div>
         </div>

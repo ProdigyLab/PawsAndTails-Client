@@ -1,64 +1,68 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import { Input } from "antd";
+"use client"
+import React from "react";
+import { Layout, Menu, Switch } from 'antd';
+import Link from 'next/link';
+import { useTheme } from '../../theme';  // Adjust this import path as needed
 import SearchBarComponent from "./searchBar";
+import { Image } from 'antd';
 
-// const { Search } = Input;
+const { Header } = Layout;
+
 const NavBarComponent = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
-  // useEffect(() => {
-  //     const handleScroll = () => {
-  //       setIsScrolled(window.scrollY > (showBanner ? 45 : 0));
+  const headerStyle = {
+    background: isDarkMode ? '#001529' : '#fff',
+    padding: 0,
+    transition: 'all 0.3s',
+  };
 
-  //       const sectionIDs = NavItems.map((item) => item.name.toLowerCase());
-
-  //       const currentSection = sectionIDs.find((sectionID) => {
-  //         const sectionElement = document.getElementById(sectionID);
-  //         if (sectionElement) {
-  //           const { top, bottom } = sectionElement.getBoundingClientRect();
-  //           const isSectionInView = top >= 0 && bottom <= window.innerHeight;
-  //           return isSectionInView;
-  //         }
-  //         return false;
-  //       });
-
-  //       if (currentSection) {
-  //         setActiveSection(currentSection);
-  //       } else {
-  //         setActiveSection("");
-  //       }
-  //     };
-
-  //     window.addEventListener("scroll", handleScroll);
-  //     handleScroll();
-
-  //     return () => {
-  //       window.removeEventListener("scroll", handleScroll);
-  //     };
-  //   }, [showBanner]);
+  const textStyle = {
+    color: isDarkMode ? '#fff' : '#001529',
+  };
 
   return (
-    <div>
-      <div className=" grid grid-cols-3 ">
-        <div className=" flex justify-center ">
+    <Header className="fixed w-full z-50" style={headerStyle}>
+      <div className="grid grid-cols-3 items-center h-full">
+        <div className="flex justify-center">
           <Image
+            preview={false}
             src={`https://i.ibb.co/wCFf0kW/pet-shop-with-home-animals-petshop-supermarket-vector-25837276.jpg`}
-            alt="Picture of the author"
-            width={70}
-            height={90}
+            alt="Logo"
+            width={90}
+            height={65}
           />
         </div>
-        <div className="flex justify-evenly items-center cursor-pointer ">
-          <div>About Us</div>
-          <div>Services</div>
-          <div>Contact Us</div>
-        </div>
-        <div className=" flex justify-center items-center">
-          <SearchBarComponent />
+        <Menu
+          theme={isDarkMode ? 'dark' : 'light'}
+          mode="horizontal"
+          style={{ 
+            justifyContent: 'center', 
+            background: 'transparent',
+            borderBottom: 'none',
+          }}
+        >
+          <Menu.Item key="1">
+            <Link href="/about" style={textStyle}>About Us</Link>
+          </Menu.Item>
+          <Menu.Item key="2">
+            <Link href="/services" style={textStyle}>Services</Link>
+          </Menu.Item>
+          <Menu.Item key="3">
+            <Link href="/contact" style={textStyle}>Contact Us</Link>
+          </Menu.Item>
+        </Menu>
+        <div className="flex justify-center items-center space-x-4">
+          <SearchBarComponent isDarkMode={isDarkMode} />
+          <Switch
+            checkedChildren="🌙"
+            unCheckedChildren="☀️"
+            checked={isDarkMode}
+            onChange={toggleTheme}
+          />
         </div>
       </div>
-    </div>
+    </Header>
   );
 };
 
