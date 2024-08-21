@@ -6,19 +6,13 @@ import { ReactNode, useEffect, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import { ThemeProvider, useTheme } from "@/components/ui/theme";
 import NavBarComponent from "@/components/ui/features/Navbar";
-import { Flex, Spin } from "antd";
+import PetLoader from "@/components/ui/elements/Loader";
 
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
 interface LayoutProps {
   children: ReactNode;
 }
-
-const Loader = () => (
-  <Flex align="center" justify="center" style={{ height: "100vh" }}>
-    <Spin size="large" />
-  </Flex>
-);
 
 function LayoutContent({ children }: LayoutProps) {
   const { isDarkMode } = useTheme();
@@ -27,7 +21,7 @@ function LayoutContent({ children }: LayoutProps) {
     // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -42,7 +36,7 @@ function LayoutContent({ children }: LayoutProps) {
     >
       <Provider store={store}>
         {isLoading ? (
-          <Loader />
+          <PetLoader isLoading={isLoading} />
         ) : (
           <>
             <NavBarComponent />
