@@ -4,6 +4,7 @@ import metaData from "../../public/meta.json";
 import NavBarComponent from "@/components/ui/features/Navbar";
 import PetCardComponent from "@/components/ui/features/PetCard";
 import FooterComponent from "@/components/ui/features/Footer";
+import PetPolicyDescription from "@/components/ui/features/PetPolicyDescription";
 
 export default function Home() {
   return (
@@ -23,8 +24,7 @@ export default function Home() {
         {/* <NavBarComponent/> */}
         
         <PetCardComponent/>
-        {/* <AddTodo />
-        <TodoList /> */}
+        <PetPolicyDescription/>
       <FooterComponent/>
       </main>
     </>

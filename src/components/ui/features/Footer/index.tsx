@@ -5,19 +5,20 @@ import Link from "next/link";
 const FooterComponent = () => {
   return (
     <>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="py-12 w-full bg-slate-600 text-gray-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full ">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-lg font-bold mb-4">Sign up for offers</h3>
             <p className="mb-4">Sign up for our newsletter to receive exclusive offers & discounts!</p>
-            <div className="flex">
+            <div className="flex justify-end items-center">
               <Input
                 placeholder="Your email address..."
-                className="flex-1 bg-gray-800 border-none rounded-l-md py-2 px-4 focus:outline-none"
+                className=" border-none rounded-l-md py-2 px-1 focus:outline-none relative"
               />
               <Button
                 type="primary"
-                className="bg-orange-500 hover:bg-orange-600 rounded-r-md py-2 px-4"
+                className="bg-orange-500 hover:bg-orange-600 rounded-r-md py-2 px-4 absolute"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -77,6 +78,7 @@ const FooterComponent = () => {
           © {new Date().getFullYear()} The Pet Shop
         </div>
       </div>
+      </footer>
     </>
   );
 };
