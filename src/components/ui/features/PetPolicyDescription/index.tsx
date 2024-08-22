@@ -1,17 +1,12 @@
 import { Image } from "antd";
 import { FaTruck, FaUndo, FaShieldAlt, FaHeadset } from 'react-icons/fa';
+import { SiDatadog } from "react-icons/si";
 const PetPolicyDescription = () => {
   return (
     <div>
       <div className="text-center py-16 bg-white">
-        <div className="mb-8">
-          <Image
-            width={200}
-            preview={false}
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            alt="logo"
-            
-          />
+        <div className="mb-8 flex justify-center items-center">
+        <SiDatadog className="text-6xl text-orange-500 mb-4" />
           <p className="text-3xl font-bold text-orange-500">
             What your pet needs, <span>when they need it</span>.
           </p>
