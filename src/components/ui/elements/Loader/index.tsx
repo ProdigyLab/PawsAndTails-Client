@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FaPaw } from 'react-icons/fa';
+import React from "react";
+import styled from "styled-components";
+import { FaPaw } from "react-icons/fa";
 
 const Container = styled.div`
   display: flex;
@@ -12,9 +12,9 @@ const Container = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: white; 
-  z-index: 9999; 
-  font-family: 'Londrina Solid', cursive;
+  background-color: white;
+  z-index: 9999;
+  font-family: "Londrina Solid", cursive;
 `;
 
 const Title = styled.h1`
@@ -105,11 +105,11 @@ const RightPaw = styled(Icon)`
   }
 `;
 interface PetLoaderProps {
-    isLoading: boolean;
-  }
+  isLoading: boolean;
+}
 
-const PetLoader: React.FC<PetLoaderProps> = ({ isLoading }) => {
-  return isLoading ? (
+const PetLoader: React.FC<PetLoaderProps> = () => {
+  return (
     <Container>
       <Title>Finding your pet...</Title>
       <Loader>
@@ -121,7 +121,7 @@ const PetLoader: React.FC<PetLoaderProps> = ({ isLoading }) => {
         </RightPaw>
       </Loader>
     </Container>
-  ) : null;
+  );
 };
 
 export default PetLoader;

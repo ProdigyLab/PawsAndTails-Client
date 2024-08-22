@@ -2,7 +2,7 @@
 import "./globals.css";
 import { Provider } from "react-redux";
 import store from "../redux/store";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useState, use } from "react";
 import { ConfigProvider, theme } from "antd";
 import { ThemeProvider, useTheme } from "@/components/ui/theme";
 import NavBarComponent from "@/components/ui/features/Navbar";
@@ -17,14 +17,15 @@ interface LayoutProps {
 function LayoutContent({ children }: LayoutProps) {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
+  
+  const finishLoading = useCallback(() => {
+    setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-
-    return () => clearTimeout(timer);
   }, []);
+
+  // Call finishLoading immediately
+  finishLoading();
   return (
     <ConfigProvider
       theme={{
