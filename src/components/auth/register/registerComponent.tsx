@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { UseAppDispatch, UseAppSelector } from "@/redux/hook";
 import {
   handleChangeRegisterInput,
-  submitRegisterForm,
+  // submitRegisterForm,
 } from "@/redux/actions/registerActions";
 import SuccessLottie from "../success/success_lottie";
+import { postMethod } from "@/utils/api/postMethod";
+import { endPoints } from "@/utils/api/route";
+import { signIn } from "next-auth/react";
 
 const RegisterComponent = () => {
   const [isRegister, setIsRegister] = useState<boolean>(false);
@@ -27,20 +30,43 @@ const RegisterComponent = () => {
     dispatch(handleChangeRegisterInput(name, value));
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleRegisterSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const formData = {
-      strUserName,
-      strEmail,
-      strPassword,
-      strFirstName,
-      strLastName,
-      strPhone,
-    };
+
     try {
-     await dispatch(submitRegisterForm(formData));
-      setIsRegister(true);
-      console.log("formData", formData);
+      const response = await postMethod({
+        route: endPoints.auth.register,
+        postData: {
+          name: strUserName,
+          email: strEmail,
+          password: strPassword,
+          first_name: strFirstName,
+          last_name: strLastName,
+          phone: strPhone,
+          role: "Customer",
+        },
+      });
+      if (response.data.statusCode == 200) {
+        const loginResponse = await postMethod({
+          route: endPoints.auth.login,
+          postData: {
+            email: strEmail,
+            password: strPassword,
+          },
+        });
+        if (loginResponse.data.statusCode === 200) {
+          await signIn("credentials", {
+            ...response?.data?.user,
+            redirect: false,
+          });
+          console.log("Login response:", loginResponse.data.data);
+          // handle success and navigate to home page
+        } else {
+          console.error("Login failed:", loginResponse.data.message);
+        }
+      } else {
+        console.error("Registration failed:", response.data.message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +169,7 @@ const RegisterComponent = () => {
               <button
                 type="button"
                 className="w-full px-4 py-2 bg-green-500 rounded-md text-white hover:bg-green-600 transition"
-                onClick={handleSubmit}
+                onClick={handleRegisterSubmit}
               >
                 Register
               </button>

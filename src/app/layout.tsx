@@ -7,6 +7,7 @@ import { ConfigProvider, theme } from "antd";
 import { ThemeProvider, useTheme } from "@/components/ui/theme";
 import NavBarComponent from "@/components/ui/features/Navbar";
 import PetLoader from "@/components/ui/elements/Loader";
+import { SessionProvider } from "next-auth/react";
 
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
@@ -53,9 +54,11 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body>
+      <SessionProvider>
         <ThemeProvider>
           <LayoutContent>{children}</LayoutContent>
         </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

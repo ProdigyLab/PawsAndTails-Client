@@ -1,204 +1,120 @@
-import NextAuth, { type NextAuthOptions, type Session } from "next-auth";
+import NextAuth from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import AzureADProvider from "next-auth/providers/azure-ad";
 import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
-import axios from "axios";
 import { endPoints } from "@/utils/api/route";
-import { OAuthConfig } from "next-auth/providers/oauth";
+import { postMethod } from "@/utils/api/postMethod";
 
 interface User {
-  id: string;
   name?: string | null;
+  id: string;
+  _id: string;
+  username: string;
   email?: string | null;
-  image?: string | null;
-  picture?: string | null;
-  strPhone?: string | null;
-  intId?: number | null;
-  strEmail?: string | null;
-  intRoleId?: number | null;
-  isAllBranch?: boolean | null;
-  isOrderFullAccess?: boolean | null;
+  role?: string | null;
   accessToken?: string | null;
-  refreshToken?: string | null;
-  accessTokenExpiresIn?: string | null;
-  refreshTokenExpiresIn?: string | null;
 }
 
 interface CustomSession extends Session {
   user: User;
+  token: string;
 }
 
-// Define a custom type for session configuration
-interface CustomSessionOptions {
-  jwt: boolean;
-  maxAge: number;
-  // Add other session properties as needed
-}
-
-// Define the session configuration explicitly with the correct type
-const sessionConfig: Partial<CustomSessionOptions> = {
-  jwt: true,
-  maxAge: 30 * 24 * 60 * 60,
-};
-
-const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
+export const authOptions: NextAuthOptions = {
   providers: [
     DiscordProvider({
-      clientId: `${process.env.DISCORD_CLIENT_ID}`,
-      clientSecret: `${process.env.DISCORD_CLIENT_SECRET}`,
+      clientId: process.env.DISCORD_CLIENT_ID!,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
     }),
     GithubProvider({
-      clientId: `${process.env.GITHUB_ID}`,
-      clientSecret: `${process.env.GITHUB_SECRET}`,
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
     FacebookProvider({
-      clientId: `${process.env.FACEBOOK_ID}`,
-      clientSecret: `${process.env.FACEBOOK_SECRET}`,
+      clientId: process.env.FACEBOOK_ID!,
+      clientSecret: process.env.FACEBOOK_SECRET!,
     }),
     AzureADProvider({
-      clientId: `${process.env.AZURE_AD_CLIENT_ID}`,
-      clientSecret: `${process.env.AZURE_AD_CLIENT_SECRET}`,
-      tenantId: `${process.env.AZURE_AD_TENANT_ID}`,
+      clientId: process.env.AZURE_AD_CLIENT_ID!,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET!,
+      tenantId: process.env.AZURE_AD_TENANT_ID!,
     }),
     GoogleProvider({
-      clientId: `${process.env.GOOGLE_ID}`,
-      clientSecret: `${process.env.GOOGLE_SECRET}`,
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
-
     CredentialsProvider({
-      type: "credentials",
+      name: "Credentials",
       credentials: {},
       async authorize(credentials) {
-        const user = {
-          ...credentials,
-        } as User;
+        const user = { ...credentials };
         if (user) {
-          return user;
+          return user as any;
         } else {
           console.log("check your credentials");
           return null;
         }
-      },// import type { OAuthConfig } from "next-auth/providers";
+      },
     }),
-  ] as OAuthConfig<User>[],
+  ],
 
-  session: sessionConfig,
+  secret: process.env.NEXTAUTH_SECRET,
+
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
 
   callbacks: {
-    async signIn(params) {
-      const { user, account } = params;
-      if (
-        (user && account && account.provider === "azure-ad") ||
-        (account && account.provider === "google")
-      ) {
+    async signIn({ user, account }) {
+      if (account?.provider === "github" || account?.provider === "google") {
         const { id, name, email, image } = user;
-        console.log(name, email, image, id);
-        const postData = {
-          strUserName: name,
-          strFirstName: name,
-          strEmail: email,
-          strPhone: email,
-          strPassword: id,
+        const RegisterData = {
+          email,
+          password: id,
+          username: name,
+          phone: "0123456",
+          image,
+          role: "Customer",
         };
-
         try {
-          const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}${endPoints.auth.register}`,
-            postData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            },
-          );
-
-          if (response?.data?.statusCode === 200) {
-            console.log("Provider login response:", response?.data?.data);
+          const registerResponse = await postMethod({
+            route: endPoints.auth.register,
+            postData: RegisterData,
+          });
+          if (registerResponse?.data?.statusCode === 200) {
+            await postMethod({
+              route: endPoints.auth.login,
+              postData: { email, password: id },
+            });
           } else {
-            console.error(
-              "Error sending data to endpoint:",
-              response.statusText,
-            );
+            await postMethod({
+              route: endPoints.auth.login,
+              postData: { email, password: id },
+            });
           }
         } catch (error) {
-          console.error("Error:", error);
+          console.error("Error during sign in:", error);
+          await postMethod({
+            route: endPoints.auth.login,
+            postData: { email, password: id },
+          });
         }
       }
-
       return true;
     },
-// @ts-expect-error type error is not solved
+
     async jwt({ token, user, trigger, session }) {
-      try {
-        if (user) {
-          console.log("User and account found, setting tokens.");
-          token = {
-            ...token,
-            ...user,
-            // @ts-expect-error type error is not solved
-            accessToken: user.accessToken,
-            // @ts-expect-error type error is not solved
-            refreshToken: user.refreshToken,
-            // @ts-expect-error type error is not solved
-            accessTokenExpires: user.accessTokenExpiresIn,
-            // @ts-expect-error type error is not solved
-            refreshTokenExpires: user.refreshTokenExpiresIn,
-          };
-        }
-
-        if (trigger === "update" && session?.user) {
-          console.log("Trigger is update, merging session user with token.");
-          token = { ...token, ...session.user };
-        }
-
-        // if (Date.now() < ((token.accessTokenExpires * 1000) as number)) {
-        //   console.log("Access token is still valid, returning token.");
-
-        //   return token;
-        // }
-        // @ts-expect-error type error is not solved
-        if (new Date(token.accessTokenExpires) > new Date()) {
-          console.log("Access token is still valid, returning token.");
-
-          return token;
-        }
-
-        console.log("Access token has expired, attempting to refresh.");
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}${endPoints.auth.validaterefreshtoken}`,
-          {
-            refreshToken: token.refreshToken,
-          },
-        );
-
-        if (response.data) {
-          console.log("Token refresh successful, updating tokens.");
-          token.accessToken = response.data.accessToken;
-          token.refreshToken = response.data.refreshToken;
-          token.accessTokenExpires = response.data.accessTokenExpires;
-          token.refreshTokenExpires = response.data.refreshTokenExpires;
-        } else {
-          console.error("Failed to refresh token: Invalid response data");
-          return null;
-        }
-
-        return token;
-      } catch (error) {
-        console.error(
-          "Error refreshing token:",
-          // @ts-expect-error type error is not solved
-          error.response?.data?.message || error.message,
-        );
-        return null;
+      if (trigger === "update") {
+        return { ...token, ...session.user };
       }
-
       return { ...token, ...user };
     },
-// @ts-expect-error type error is not solved
+
     async session({
       session,
       token,

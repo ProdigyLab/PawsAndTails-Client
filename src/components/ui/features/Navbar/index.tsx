@@ -5,11 +5,19 @@ import Link from 'next/link';
 import { useTheme } from '../../theme';  // Adjust this import path as needed
 import SearchBarComponent from "./searchBar";
 import { Image } from 'antd';
+import { signOut } from "next-auth/react";
+import { Button } from "antd/es/radio";
 
 const { Header } = Layout;
 
 const NavBarComponent = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+
+  const handleLogOut = async () => {
+    await signOut({
+      callbackUrl: "/login",
+    });
+  }
 
   const headerStyle = {
     background: isDarkMode ? '#001529' : '#fff',
@@ -60,6 +68,11 @@ const NavBarComponent = () => {
             checked={isDarkMode}
             onChange={toggleTheme}
           />
+        </div>
+        <div>
+          <Button onClick={handleLogOut}>
+            LogOut
+          </Button>
         </div>
       </div>
     </Header>

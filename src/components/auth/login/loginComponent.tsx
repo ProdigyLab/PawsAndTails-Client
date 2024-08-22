@@ -3,6 +3,10 @@ import React from "react";
 import { handleChangeLoginInput } from "@/redux/actions/loginActions";
 import { UseAppDispatch, UseAppSelector } from "@/redux/hook";
 import axios from "axios";
+import { endPoints } from "@/utils/api/route";
+import { getMethod } from "@/utils/api/getMethod";
+import { postMethod } from "@/utils/api/postMethod";
+import { signIn } from "next-auth/react";
 
 const LoginComponent = () => {
   const dispatch = UseAppDispatch();
@@ -16,12 +20,21 @@ const LoginComponent = () => {
 
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('https://beachlimodb.vercel.app/api/auth/login', {
+      const response = await postMethod({route:endPoints.auth.login, postData:{
         email: email,
         password: password
-      }
+      }},
     )
-    console.log(response)
+    if(response.data.statusCode === 200) {
+      await signIn("credentials", {
+        ...response?.data?.user,
+        redirect: false,
+      });
+      console.log(response.data.data)
+    }
+    else{
+      console.error(response.data.message)
+    }
     } catch (error) {
       console.error(error)
     }
