@@ -68,11 +68,11 @@ const NavBarComponent = () => {
             checked={isDarkMode}
             onChange={toggleTheme}
           />
-        </div>
         <div>
           <Button onClick={handleLogOut}>
             LogOut
           </Button>
+        </div>
         </div>
       </div>
     </Header>

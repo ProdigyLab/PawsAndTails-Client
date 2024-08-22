@@ -8,6 +8,7 @@ import { ThemeProvider, useTheme } from "@/components/ui/theme";
 import NavBarComponent from "@/components/ui/features/Navbar";
 import PetLoader from "@/components/ui/elements/Loader";
 import { SessionProvider } from "next-auth/react";
+import FooterComponent from "@/components/ui/features/Footer";
 
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
@@ -43,6 +44,7 @@ function LayoutContent({ children }: LayoutProps) {
           <>
             <NavBarComponent />
             {children}
+            <FooterComponent/>
           </>
         )}
       </Provider>
