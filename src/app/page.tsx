@@ -5,6 +5,7 @@ import NavBarComponent from "@/components/ui/features/Navbar";
 import PetCardComponent from "@/components/ui/features/PetCard";
 import FooterComponent from "@/components/ui/features/Footer";
 import PetPolicyDescription from "@/components/ui/features/PetPolicyDescription";
+import HeroComponent from "@/components/ui/features/Hero/hero";
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
       </Head>
       <main>
         {/* <NavBarComponent/> */}
-        
+        <HeroComponent/>
         <PetCardComponent/>
         <PetPolicyDescription/>
       </main>
