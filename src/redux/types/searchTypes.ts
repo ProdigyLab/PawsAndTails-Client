@@ -1,1 +1,2 @@
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';

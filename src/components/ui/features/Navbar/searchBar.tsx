@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import { Input } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "@/hooks/useDebounce";
 import { setSearchTerm } from "@/redux/actions/searchActions";
+import { RootState } from "@/redux/store";
 
 type PropsType = {
   isDarkMode: boolean;
@@ -12,7 +13,7 @@ const SearchBarComponent = ({ isDarkMode }: PropsType) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const dispatch = useDispatch();
-
+  const searchResults = useSelector((state: RootState) => state.searchReducer.searchTerm);
   const debouncedSetSearchTerm = useDebounce((value: string) => {
     dispatch(setSearchTerm(value));
   }, 300);

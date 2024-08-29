@@ -13,6 +13,12 @@ const SearchReducer = (state = initialState, action: AnyAction) => {
         ...state,
         searchTerm: action.payload,
       };
+      case Types.SET_SEARCH_RESULTS:
+        return {
+         ...state,
+          // Add logic to handle search results
+          results: action.payload
+        };
     default:
       break;
   }
