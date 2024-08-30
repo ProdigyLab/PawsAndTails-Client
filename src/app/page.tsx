@@ -25,8 +25,8 @@ export default function Home() {
       <main>
         {/* <NavBarComponent/> */}
         <HeroComponent/>
-        <MobileAppSection/>
         <PetCardComponent/>
+        <MobileAppSection/>
         <PetPolicyDescription/>
       </main>
     </>
