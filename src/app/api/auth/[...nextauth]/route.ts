@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -24,7 +24,7 @@ interface CustomSession extends Session {
   token: string;
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -122,7 +122,7 @@ export const authOptions: NextAuthOptions = {
       session: CustomSession;
       token: Partial<User>;
     }) {
-      session.user = token as User;
+      (session as CustomSession).user = token as User;
       return session;
     },
   },
