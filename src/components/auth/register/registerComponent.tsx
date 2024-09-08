@@ -20,6 +20,10 @@ const RegisterComponent = () => {
     strFirstName,
     strLastName,
     strPhone,
+    strImageURL,
+    dteCreatedAt,
+    dteLastLoginAt,
+    intOrganizationId,
   } = UseAppSelector(
     (state) => state?.registerAuthReducer?.registerAuth?.registerInput
   );
@@ -37,13 +41,17 @@ const RegisterComponent = () => {
       const response = await postMethod({
         route: endPoints.auth.register,
         postData: {
-          name: strUserName,
-          email: strEmail,
-          password: strPassword,
-          first_name: strFirstName,
-          last_name: strLastName,
-          phone: strPhone,
-          role: "Customer",
+          strUserName: strUserName,
+          strEmail: strEmail,
+          strPassword: strPassword,
+          strFirstName: strFirstName,
+          strLastName: strLastName,
+          strPhone: strPhone,
+          strImageURL: strImageURL,
+          dteCreatedAt: dteCreatedAt,
+          dteLastLoginAt: dteLastLoginAt,
+          intOrganizationId: intOrganizationId,
+          // role: "Customer",
         },
       });
       if (response.data.statusCode == 200) {
@@ -54,6 +62,8 @@ const RegisterComponent = () => {
             password: strPassword,
           },
         });
+        console.log("loginResponse", loginResponse);
+        
         if (loginResponse.data.statusCode === 200) {
           await signIn("credentials", {
             ...response?.data?.user,
