@@ -137,7 +137,7 @@ return res.json({ success: true });`,
 ];
 
 const MobileAppSection: React.FC = () => {
-  const [openSection, setOpenSection] = useState("functions");
+  const [openSection, setOpenSection] = useState<string | null>("functions");
   const [scrollPosition, setScrollPosition] = useState(0);
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -166,7 +166,7 @@ const MobileAppSection: React.FC = () => {
       }
 
       // Calculate the scroll position relative to the specific section
-      if (sectionRefs.current[openSection]) {
+      if (openSection && sectionRefs.current[openSection]) {
         const section = sectionRefs.current[openSection];
         const sectionTop = section?.offsetTop || 0;
         const sectionHeight = section?.offsetHeight || 1;
@@ -192,7 +192,7 @@ const MobileAppSection: React.FC = () => {
           {sections.map((section) => (
             <Section
               key={section.id}
-              ref={(el) => (sectionRefs.current[section.id] = el)}
+              ref={(el) => {sectionRefs.current[section.id] = el}}
               isOpen={openSection === section.id}
             >
               <SectionButton

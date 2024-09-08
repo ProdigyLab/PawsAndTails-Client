@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import type { NextAuthOptions, Session } from "next-auth";
+import type { JWT } from "next-auth/jwt"; 
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -119,11 +120,11 @@ const authOptions: NextAuthOptions = {
       session,
       token,
     }: {
-      session: CustomSession;
-      token: Partial<User>;
+      session: Session;
+      token: JWT;
     }) {
-      (session as CustomSession).user = token as User;
-      return session;
+      (session as CustomSession).user = token as unknown as User;
+      return session as CustomSession;
     },
   },
 };

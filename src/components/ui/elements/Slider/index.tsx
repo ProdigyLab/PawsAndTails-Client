@@ -85,7 +85,7 @@ const CompanySlider = () => {
             <SwiperSlide key={slide.id}>
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-4 text-green-600">{slide.company}</h2>
-                <p className="text-lg italic mb-6 text-gray-700">"{slide.quote}"</p>
+                <p className="text-lg italic mb-6 text-gray-700">{slide.quote}</p>
                 <div className="flex items-center justify-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-gray-200 mr-3 overflow-hidden">
                     <img src={slide.imageUrl} alt={slide.person} className="w-full h-full object-cover" />
