@@ -7,6 +7,7 @@ import FooterComponent from "@/components/ui/features/Footer";
 import PetPolicyDescription from "@/components/ui/features/PetPolicyDescription";
 import HeroComponent from "@/components/ui/features/Hero/hero";
 import MobileAppSection from "@/components/ui/features/petFoods";
+import CompanySlider from "@/components/ui/elements/Slider";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
         <PetCardComponent/>
         <MobileAppSection/>
         <PetPolicyDescription/>
+        <CompanySlider/>
       </main>
     </>
   );
