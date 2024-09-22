@@ -2,15 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { handleChangeLoginInput } from "@/redux/actions/loginActions";
 import { UseAppDispatch, UseAppSelector } from "@/redux/hook";
-import axios from "axios";
 import { endPoints } from "@/utils/api/route";
-import { getMethod } from "@/utils/api/getMethod";
 import { postMethod } from "@/utils/api/postMethod";
 import { signIn } from "next-auth/react";
 import { Button, Input } from "antd";
 import useLottieAnimation from "@/hooks/useAnimation";
-import animationData from "./loginAnimation.json"; 
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import animationData from "./loginAnimation.json";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import Link from "next/link";
 
 const LoginComponent = () => {
   const dispatch = UseAppDispatch();
@@ -25,7 +24,8 @@ const LoginComponent = () => {
   };
 
   const validatePassword = (password: string): boolean => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     return passwordRegex.test(password);
   };
 
@@ -55,31 +55,30 @@ const LoginComponent = () => {
       );
       return;
     }
-
     setPasswordError(null);
-    
+
     try {
-      const response = await postMethod({route:endPoints.auth.login, postData:{
-        strEmail: email,
-        strPassword: password
-      }},
-    )
-    console.log("response", response);
-    
-    if(response.data.statusCode === 200) {
-      await signIn("credentials", {
-        ...response?.data?.user,
-        redirect: false,
+      const response = await postMethod({
+        route: endPoints.auth.login,
+        postData: {
+          strEmail: email,
+          strPassword: password,
+        },
       });
-      console.log(response.data.data)
-    }
-    else{
-      console.error(response.data.message)
-    }
+      console.log("response", response);
+
+      if (response.data.statusCode === 200) {
+        await signIn("credentials", {
+          ...response?.data?.user,
+          redirect: false,
+        });
+      } else {
+        console.error(response.data.message);
+      }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
   const containerRef = useLottieAnimation({
     animationData,
     loop: true,
@@ -94,7 +93,9 @@ const LoginComponent = () => {
 
       {/* Login Form Section */}
       <div className="w-[40%] p-8 bg-white shadow-lg rounded-lg">
-          <div className="flex justify-center font-semibold text-xl">Login for Pets?</div>
+        <div className="flex justify-center font-semibold text-xl">
+          Login for Pets?
+        </div>
         <div className="flex flex-col gap-4 px-4 py-6">
           <div className="flex flex-col gap-4">
             <label htmlFor="email">Email:</label>
@@ -106,7 +107,7 @@ const LoginComponent = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => handleChangeInput("email", e.target.value)}
-              className="px-4 py-3 rounded-md text-black"
+              className={`px-4 py-3 rounded-md text-black`}
               allowClear
             />
           </div>
@@ -125,7 +126,7 @@ const LoginComponent = () => {
               iconRender={(visible) =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
-              visibilityToggle 
+              visibilityToggle
             />
             {passwordError && (
               <p className="text-red-500 text-sm">{passwordError}</p>
@@ -135,14 +136,24 @@ const LoginComponent = () => {
             <Button
               type="button"
               title="login"
-              className={`w-full bg-green-700 text-white p-2 rounded-md hover:bg-green-600 ${
-                isButtonDisabled ? "cursor-not-allowed bg-gray-400 hover:bg-gray-300" : "cursor-pointer"
+              className={`w-full bg-[#ed7e23] text-black p-2 rounded-md hover:bg-[#ed7e23] ${
+                isButtonDisabled
+                  ? "cursor-not-allowed bg-gray-400 hover:bg-gray-300"
+                  : "cursor-pointer"
               }`}
               onClick={handleLoginSubmit}
               disabled={isButtonDisabled}
             >
               Login
             </Button>
+          </div>
+        </div>
+        <div>
+          <div className="flex justify-center text-sm gap-1">
+            Don't have an account?{" "}
+            <Link href="/register" className="underline text-blue-500">
+              Register Now
+            </Link>
           </div>
         </div>
       </div>
