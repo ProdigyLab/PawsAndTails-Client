@@ -5,18 +5,22 @@ import Link from 'next/link';
 import { useTheme } from '../../theme';  // Adjust this import path as needed
 import SearchBarComponent from "./searchBar";
 import { Image } from 'antd';
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "antd/es/radio";
+import { useRouter } from "next/navigation";
 
 const { Header } = Layout;
 
 const NavBarComponent = () => {
   const { isDarkMode, toggleTheme } = useTheme();
-
+const {data: session} = useSession()
+const router = useRouter();
   const handleLogOut = async () => {
-    await signOut({
-      callbackUrl: "/login",
-    });
+    await signOut({ redirect: false });
+    router.push('/login');
+  }
+  const handleLogIn = async () => {
+    router.push('/login');
   }
 
   const headerStyle = {
@@ -69,10 +73,13 @@ const NavBarComponent = () => {
             onChange={toggleTheme}
           />
         <div>
-          <Button onClick={handleLogOut}>
-            LogOut
-          </Button>
+        {
+          session?.user ? <Button onClick={handleLogOut}>
+          LogOut
+        </Button> : <Button onClick={handleLogIn} >Login</Button>
+        }
         </div>
+          
         </div>
       </div>
     </Header>

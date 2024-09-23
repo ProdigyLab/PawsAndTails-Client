@@ -23,6 +23,9 @@ interface User {
 interface CustomSession extends Session {
   user: User;
   token: string;
+  accessToken?: string;
+  refreshToken?: string;
+
 }
 
 const authOptions: NextAuthOptions = {
@@ -109,23 +112,27 @@ const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async jwt({ token, user, trigger, session }) {
-      if (trigger === "update") {
-        return { ...token, ...session.user };
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
       }
-      return { ...token, ...user };
+      return token;
     },
 
-    async session({
-      session,
-      token,
-    }: {
-      session: Session;
-      token: JWT;
-    }) {
-      (session as CustomSession).user = token as unknown as User;
+
+
+    async session({ session, token }: { session: Session; token: JWT }) {
+      (session as CustomSession).user = token.user as User;
+      (session as CustomSession).accessToken = token.accessToken as string;
       return session as CustomSession;
     },
+  },
+  pages: {
+    signIn: '/login',
+    signOut: '/login',
+    error: '/login', // Error code passed in query string as ?error=
   },
 };
 

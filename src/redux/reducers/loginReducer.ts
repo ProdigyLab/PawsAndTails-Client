@@ -4,8 +4,8 @@ import type { AnyAction } from "@reduxjs/toolkit";
 
 const initialState: ILoginAuthReducer = {
 loginInput: {
-    email: "",
-    password: "",
+    strEmail: "",
+    strPassword: "",
 },
   isSubmitting: false,
   errors: "",
