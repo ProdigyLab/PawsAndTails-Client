@@ -1,9 +1,11 @@
 export interface IPetType {
     id: number;
-    name: string;
+    strPetName: string;
     imageUrl: string;
-    shortDescription: string;
+    strPetDesc: string;
     fullDescription: string;
     size: string;
     color: string;
+    strPetFood: string;
+    dteCreatedAt: Date;
   }

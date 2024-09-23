@@ -16,4 +16,7 @@ export const endPoints = {
     verifypassword: "auth/verify-password",
     registerOrg: "auth/registerOrg",
   },
+  petInfo: {
+    getPetsInfoData: "petInfo",
+  }
 };
