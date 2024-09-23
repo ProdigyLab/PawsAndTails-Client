@@ -4,15 +4,19 @@ import { handleChangeLoginInput } from "@/redux/actions/loginActions";
 import { UseAppDispatch, UseAppSelector } from "@/redux/hook";
 import { endPoints } from "@/utils/api/route";
 import { postMethod } from "@/utils/api/postMethod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Button, Input } from "antd";
 import useLottieAnimation from "@/hooks/useAnimation";
 import animationData from "./loginAnimation.json";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LoginComponent = () => {
   const dispatch = UseAppDispatch();
+  const { data: session } = useSession();
+  console.log("session", session?.user?.email);
+  const router = useRouter();
   const { email, password } = UseAppSelector(
     (state) => state?.loginauthReducer?.loginAuth?.loginInput
   );
@@ -47,6 +51,7 @@ const LoginComponent = () => {
       setIsButtonDisabled(false);
     }
   }, [email, password]);
+  
 
   const handleLoginSubmit = async () => {
     if (!validatePassword(password)) {
@@ -68,10 +73,14 @@ const LoginComponent = () => {
       console.log("response", response);
 
       if (response.data.statusCode === 200) {
-        await signIn("credentials", {
-          ...response?.data?.user,
+        const result = await signIn("credentials", {
+          strEmail: email,
+          strPassword: password,
           redirect: false,
         });
+        if (result?.ok) {
+          router.push('/'); // Redirect to dashboard or desired page
+        }
       } else {
         console.error(response.data.message);
       }
