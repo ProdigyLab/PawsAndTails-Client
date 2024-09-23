@@ -3,7 +3,13 @@ const nextConfig = {
   // next.config.js
 
   images: {
-    domains: ["i.ibb.co"],
+    domains: ['example.com', 'www.google.com', "i.ibb.co"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 
