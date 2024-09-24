@@ -26,7 +26,6 @@ const RegisterComponent = () => {
   const dispatch = UseAppDispatch();
   const { data: session } = useSession();
   const router = useRouter();
-  console.log("session", session?.user?.strEmail);
   
   const {
     strUserName,
@@ -270,7 +269,7 @@ const RegisterComponent = () => {
 
           <div className="w-full">
             <Button
-              type="button"
+            ghost
               title="register"
               className={`w-full bg-[#ed7e23] text-black p-2 rounded-md hover:bg-[#ed7e23] ${
                 isButtonDisabled

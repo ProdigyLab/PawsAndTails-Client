@@ -1,4 +1,5 @@
 export interface IPetType {
+  intId: number;
     id: number;
     strPetName: string;
     imageUrl: string;
@@ -8,4 +9,7 @@ export interface IPetType {
     color: string;
     strPetFood: string;
     dteCreatedAt: Date;
+    strPetSize: string;
+    strPetColor: string;
+    
   }

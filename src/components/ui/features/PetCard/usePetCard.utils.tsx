@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { IPetType } from "../../../../types/index";
-import { petData } from "./petData";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { getMethod } from "@/utils/api/getMethod";
 import { endPoints } from "@/utils/api/route";
 
-interface PetInfoDataProps {
+export interface PetInfoDataProps {
   intId: number;
   intPetInfoId: number;
   strPetName: string;

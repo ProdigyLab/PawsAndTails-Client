@@ -143,7 +143,7 @@ const LoginComponent = () => {
           </div>
           <div className="w-full">
             <Button
-              type="button"
+              // type="button"
               title="login"
               className={`w-full bg-[#ed7e23] text-black p-2 rounded-md hover:bg-[#ed7e23] ${
                 isButtonDisabled
@@ -159,7 +159,7 @@ const LoginComponent = () => {
         </div>
         <div>
           <div className="flex justify-center text-sm gap-1">
-            Don't have an account?{" "}
+          {`Don't have an account? `}
             <Link href="/register" className="underline text-blue-500">
               Register Now
             </Link>
