@@ -2,7 +2,7 @@ export const endPoints = {
   //AuthApi
   auth: {
     //login api
-    login: "/api/v1/login",
+    login: "login",
     logout: "auth/logout",
     // register api
     sendOtp: "auth/sendOtp",

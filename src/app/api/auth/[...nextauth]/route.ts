@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import type { NextAuthOptions, Session } from "next-auth";
+import type { NextAuthOptions, Session, User as NextAuthUser } from "next-auth";
 import type { JWT } from "next-auth/jwt"; 
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -10,18 +10,17 @@ import DiscordProvider from "next-auth/providers/discord";
 import { endPoints } from "@/utils/api/route";
 import { postMethod } from "@/utils/api/postMethod";
 
-interface User {
-  name?: string | null;
+interface CustomUser extends NextAuthUser {
   id: string;
   _id: string;
   username: string;
-  email?: string | null;
   role?: string | null;
   accessToken?: string | null;
+  refreshToken?: string | null;
 }
 
 interface CustomSession extends Session {
-  user: User;
+  user: CustomUser;
   token: string;
   accessToken?: string;
   refreshToken?: string;
@@ -114,9 +113,9 @@ const authOptions: NextAuthOptions = {
 
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
+        token.user = user as CustomUser;
+        token.accessToken = (user as CustomUser).accessToken;
+        token.refreshToken = (user as CustomUser).refreshToken;
       }
       return token;
     },
@@ -124,8 +123,9 @@ const authOptions: NextAuthOptions = {
 
 
     async session({ session, token }: { session: Session; token: JWT }) {
-      (session as CustomSession).user = token.user as User;
+      (session as CustomSession).user = token.user as CustomUser;
       (session as CustomSession).accessToken = token.accessToken as string;
+      (session as CustomSession).refreshToken = token.refreshToken as string;
       return session as CustomSession;
     },
   },

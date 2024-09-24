@@ -1,8 +1,8 @@
 export interface ILoginAuthReducer {
     isSubmitting: boolean;
     loginInput: {
-      email: string;
-      password: string;
+      strEmail: string;
+      strPassword: string;
     };
     errors: any;
   }
