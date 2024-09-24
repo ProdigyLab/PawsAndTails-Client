@@ -7,7 +7,7 @@ export const endPoints = {
     // register api
     sendOtp: "auth/sendOtp",
     verifyOtp: "auth/verifyOtp",
-    register: "/api/v1/users/create",
+    register: "users/create",
     //forgot-password
     updatePassword: "auth/forgot-password",
     //refreshtokenvalidate
