@@ -6,7 +6,6 @@ import { ReactNode, useCallback, useState, use, useEffect } from "react";
 import { ConfigProvider, Spin, theme } from "antd";
 import { ThemeProvider, useTheme } from "@/components/ui/theme";
 import NavBarComponent from "@/components/ui/features/Navbar";
-import PetLoader from "@/components/ui/elements/Loader";
 import { SessionProvider } from "next-auth/react";
 import FooterComponent from "@/components/ui/features/Footer";
 import { LoadingOutlined } from "@ant-design/icons";
