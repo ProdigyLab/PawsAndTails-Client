@@ -24,27 +24,28 @@ const usePetCardUtils = (petId?: number) => {
   const [selectedPet, setSelectedPet] = useState<IPetType | null>(null);
   const [petInfoCard, setPetInfoCard] = useState<PetInfoDataProps[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
-const [singlePetInfo, setSinglePetInfo] = useState({})
+  const [singlePetInfo, setSinglePetInfo] = useState({});
 
   const searchTerm = useSelector(
     (state: RootState) => state.searchReducer.search.searchTerm
   );
 
   useEffect(() => {
-  const handleSinglePet = async (id: number) => {
-    try {
-      const response = await getMethod(endPoints.petInfo.getSinglePetInfo(id));
-      console.log("response.data.data", response.data.data);
-      setSinglePetInfo(response.data.data)
-    } catch (error) {
-      console.log("error", error);
-      
+    const handleSinglePet = async (id: number) => {
+      try {
+        const response = await getMethod(
+          endPoints.petInfo.getSinglePetInfo(id)
+        );
+        console.log("response.data.data", response.data.data);
+        setSinglePetInfo(response.data.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    if (petId) {
+      handleSinglePet(petId); // Ensure handleSinglePet is called with the passed id
     }
-  }
-  if (petId) {
-    handleSinglePet(petId); // Ensure handleSinglePet is called with the passed id
-  }
-  },[petId]);
+  }, [petId]);
   const shortDescText = (text: string | undefined, maxLength: number) => {
     if (typeof text === "string" && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
