@@ -128,9 +128,11 @@ import usePetCardUtils from "./usePetCard.utils";
 import { IPetType } from "@/types";
 import { useTheme } from '@/components/ui/theme';
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const PetCardComponent = () => {
   const { isDarkMode } = useTheme();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const {
     isModalVisible,
@@ -155,7 +157,13 @@ const PetCardComponent = () => {
   );
 
   const handleCardClick = (pet: IPetType) => {
-    router.push(`/singlePetInfo/${pet.strPetName}/${pet.id}`);
+    if (status === "authenticated") {
+      router.push(`/singlePetInfo/${pet.strPetName}/${pet.id}`);
+    } else {
+      // Store the intended destination
+      sessionStorage.setItem('intendedDestination', `/singlePetInfo/${pet.strPetName}/${pet.id}`);
+      router.push('/api/auth/signin');
+    }
   };
 
   return (
