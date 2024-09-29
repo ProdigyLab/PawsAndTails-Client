@@ -27,9 +27,9 @@ export default function Home() {
         {/* <NavBarComponent/> */}
         <HeroComponent/>
         <PetCardComponent/>
-        <MobileAppSection/>
         <PetPolicyDescription/>
         <CompanySlider/>
+        <MobileAppSection/>
       </main>
     </>
   );

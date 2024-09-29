@@ -2,10 +2,12 @@ import React from "react";
 import Image from 'next/image';
 import { Button, Input } from 'antd';
 import Link from "next/link";
+import { useTheme } from "../../theme";
 const FooterComponent = () => {
+  const { isDarkMode } = useTheme();
   return (
     <>
-    <footer className="py-12 w-full bg-slate-600 text-gray-300">
+    <footer className={`py-12 w-full text-black  ${isDarkMode ? 'bg-slate-700 && text-white' : 'bg-white'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full ">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -14,7 +16,7 @@ const FooterComponent = () => {
             <div className="flex justify-end items-center">
               <Input
                 placeholder="Your email address..."
-                className=" border-none rounded-l-md py-2 px-1 focus:outline-none relative"
+                className="  border-2 rounded-l-md py-2 px-1 focus:outline-none relative"
               />
               <Button
                 type="primary"

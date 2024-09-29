@@ -18,5 +18,6 @@ export const endPoints = {
   },
   petInfo: {
     getPetsInfoData: "petInfo",
+    getSinglePetInfo: (id: number) => `petInfo/${id}`,
   }
 };
