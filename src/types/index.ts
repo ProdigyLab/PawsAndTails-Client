@@ -1,5 +1,6 @@
 export interface IPetType {
   intId: number;
+  intPetInfoId: number;
     id: number;
     strPetName: string;
     imageUrl: string;

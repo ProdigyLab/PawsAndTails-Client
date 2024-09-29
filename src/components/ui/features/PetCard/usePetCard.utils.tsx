@@ -5,6 +5,9 @@ import { RootState } from "@/redux/store";
 import { getMethod } from "@/utils/api/getMethod";
 import { endPoints } from "@/utils/api/route";
 
+interface PetDetailsProps {
+  petId: number; // Ensure that petId is passed correctly to the component
+}
 export interface PetInfoDataProps {
   intId: number;
   intPetInfoId: number;
@@ -16,15 +19,32 @@ export interface PetInfoDataProps {
   strPetDesc: string;
   dteCreatedAt: string;
 }
-const usePetCardUtils = () => {
+const usePetCardUtils = (petId?: number) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedPet, setSelectedPet] = useState<IPetType | null>(null);
   const [petInfoCard, setPetInfoCard] = useState<PetInfoDataProps[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
+const [singlePetInfo, setSinglePetInfo] = useState({})
 
   const searchTerm = useSelector(
     (state: RootState) => state.searchReducer.search.searchTerm
   );
+
+  useEffect(() => {
+  const handleSinglePet = async (id: number) => {
+    try {
+      const response = await getMethod(endPoints.petInfo.getSinglePetInfo(id));
+      console.log("response.data.data", response.data.data);
+      setSinglePetInfo(response.data.data)
+    } catch (error) {
+      console.log("error", error);
+      
+    }
+  }
+  if (petId) {
+    handleSinglePet(petId); // Ensure handleSinglePet is called with the passed id
+  }
+  },[petId]);
   const shortDescText = (text: string | undefined, maxLength: number) => {
     if (typeof text === "string" && text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -61,7 +81,6 @@ const usePetCardUtils = () => {
       }
     } catch (error) {
       console.log(error);
-      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -79,6 +98,7 @@ const usePetCardUtils = () => {
     handleOk,
     handleCancel,
     isLoading,
+    singlePetInfo,
   };
 };
 

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Modal, Skeleton } from "antd";
 import Image from "next/image";
 import usePetCardUtils from "./usePetCard.utils";
 import { IPetType } from "@/types";
+import { useTheme } from '@/components/ui/theme';
+import { useRouter } from "next/navigation";
+
 // You can create a type alias if needed
 
 const PetCardComponent = () => {
+  const { isDarkMode } = useTheme();
+  const router = useRouter(); 
   const {
     isModalVisible,
     selectedPet,
@@ -16,12 +21,15 @@ const PetCardComponent = () => {
     handleCancel,
     isLoading,
   } = usePetCardUtils();
-  const skeletonCount = filteredPets.length;
 
+  const skeletonCount = filteredPets.length;
+  const handleCardClick = (pet: IPetType) => {
+    router.push(`/singlePetInfo/${pet.strPetName}/${pet.id}`);
+  };
   return (
-    <div className="pt-20 min-h-screen">
+    <div className={`pt-20 min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
       <div>
-        <h1 className="text-center font-semibold uppercase text-xl">
+        <h1 className={`text-center font-semibold uppercase text-xl ${isDarkMode ? 'text-white' : 'text-black'}`}>
           Our Pet Shop
         </h1>
       </div>
@@ -31,8 +39,7 @@ const PetCardComponent = () => {
           {[...Array(skeletonCount)].map((_, index) => (
             <Card
               key={index}
-              className="hover:shadow-lg transition-shadow flex flex-col justify-between items-center shadow-lg shadow-gray-200 w-full sm:w-72"
-            >
+              className={` flex flex-col justify-between items-center w-full sm:w-72 shadow-lg ${isDarkMode ? '' : 'shadow-gray-900'}`}>
               <Skeleton.Image className="w-full h-48" />
               <div className="w-full p-4">
                 <Skeleton active paragraph={{ rows: 3 }} />
@@ -44,7 +51,8 @@ const PetCardComponent = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-1 py-5 px-10">
           {filteredPets.map((pet) => {
             const convertedPet: IPetType = {
-              id: pet.intPetInfoId, // PetInfoDataProps has intPetInfoId, map it to id
+              id: pet.intPetInfoId,
+              intPetInfoId: pet.intPetInfoId,
               intId: pet.intId, // Map intId
               strPetName: pet.strPetName, // Pet name remains the same
               imageUrl: pet.strImageURL, // Map strImageURL to imageUrl
@@ -61,7 +69,8 @@ const PetCardComponent = () => {
             return (
               <Card
                 key={pet.intId}
-                className="hover:shadow-lg transition-shadow my-2 flex flex-col w-full sm:w-[70%] justify-between items-center shadow-lg shadow-gray-200"
+                onClick={() => handleCardClick(convertedPet)} 
+                className={`hover:shadow-lg transition-shadow my-2 flex flex-col w-full sm:w-[70%] justify-between items-center ${isDarkMode ? 'shadow-none' : 'shadow-lg shadow-gray-200'}`}
                 cover={
                   <Image
                     src={convertedPet.imageUrl}

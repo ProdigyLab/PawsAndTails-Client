@@ -192,7 +192,9 @@ const MobileAppSection: React.FC = () => {
           {sections.map((section) => (
             <Section
               key={section.id}
-              ref={(el) => {sectionRefs.current[section.id] = el}}
+              ref={(el) => {
+                sectionRefs.current[section.id] = el;
+              }}
               isOpen={openSection === section.id}
             >
               <SectionButton
