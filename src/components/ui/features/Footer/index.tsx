@@ -1,13 +1,13 @@
 import React from "react";
-import Image from 'next/image';
 import { Button, Input } from 'antd';
 import Link from "next/link";
 import { useTheme } from "../../theme";
+
 const FooterComponent = () => {
   const { isDarkMode } = useTheme();
   return (
     <>
-    <footer className={`py-12 w-full text-black  ${isDarkMode ? 'bg-slate-700 && text-white' : 'bg-white'}`}>
+    <div className={`py-12 w-full ${isDarkMode ? 'bg-slate-700 text-white' : 'bg-white text-black'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full ">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div>
@@ -80,7 +80,7 @@ const FooterComponent = () => {
           © {new Date().getFullYear()} The Pet Shop
         </div>
       </div>
-      </footer>
+      </div>
     </>
   );
 };
