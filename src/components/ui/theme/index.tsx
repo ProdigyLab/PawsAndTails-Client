@@ -18,10 +18,20 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Initialize theme based on local storage
-    const storedTheme = localStorage.getItem("theme");
-    return storedTheme === "dark"; // Default to light mode if not set
+    // Check localStorage only in the client
+    if (typeof window !== "undefined") {
+      const storedTheme = localStorage.getItem("theme");
+      return storedTheme === "dark"; // Default to light mode if not set
+    }
+    return false; // Default value if running on the server
   });
+
+  // Synchronize theme with localStorage whenever isDarkMode changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    }
+  }, [isDarkMode]); 
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => {
@@ -29,6 +39,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
       localStorage.setItem("theme", newMode ? "dark" : "light"); // Save theme in localStorage
       return newMode;
     });
+    return { isDarkMode, toggleTheme };
   };
 
   return (
