@@ -38,7 +38,7 @@ const PetCardComponent = () => {
       router.push(`/single-pet-info/${pet.strPetName}/${pet.id}`);
     } else {
       // Store the intended destination
-      sessionStorage.setItem('intendedDestination', `/singlePetInfo/${pet.strPetName}/${pet.id}`);
+      sessionStorage.setItem('intendedDestination', `/single-pet-info/${pet.strPetName}/${pet.id}`);
       router.push('/api/auth/signin');
     }
   };
