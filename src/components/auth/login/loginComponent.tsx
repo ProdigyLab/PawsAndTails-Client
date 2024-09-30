@@ -11,11 +11,19 @@ import animationData from "./loginAnimation.json";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@/components/ui/theme";
 
 const LoginComponent = () => {
   const dispatch = UseAppDispatch();
   const { data: session } = useSession();
-  console.log("session", session?.user?.email);
+  const { isDarkMode } = useTheme();
+  const inputStyle = isDarkMode
+    ? { 
+        backgroundColor: "#212121", 
+        borderColor: "#434343", 
+        color: "#ffffff"
+      }
+    : {};
   const router = useRouter();
   const { email, password } = UseAppSelector(
     (state) => state?.loginauthReducer?.loginAuth?.loginInput
@@ -94,14 +102,14 @@ const LoginComponent = () => {
     autoplay: true,
   });
   return (
-    <div className="flex w-full min-h-screen justify-center items-center bg-gray-100">
+    <div className={`flex w-full min-h-screen justify-center items-center ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black'}`}>
       {/* Lottie Animation Section */}
       <div className="w-1/2 flex justify-center items-center">
         <div ref={containerRef} className="w-96 h-96" />
       </div>
 
       {/* Login Form Section */}
-      <div className="w-[40%] p-8 bg-white shadow-lg rounded-lg">
+      <div className={`w-[35%] p-8 ${isDarkMode ? 'bg-gray-900 border shadow-lg shadow-gray-600' : 'bg-white'} shadow-lg rounded-lg`}>
         <div className="flex justify-center font-semibold text-xl">
           Login for Pets?
         </div>
@@ -116,8 +124,9 @@ const LoginComponent = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => handleChangeInput("email", e.target.value)}
-              className={`px-4 py-3 rounded-md text-black`}
+              className={`px-4 py-3 rounded-md ${isDarkMode ? 'text-white' : 'text-black'}`}
               allowClear
+              style={inputStyle}
             />
           </div>
           <div className="flex flex-col gap-4">
@@ -130,8 +139,9 @@ const LoginComponent = () => {
               value={password}
               placeholder="Enter your password"
               onChange={(e) => handleChangeInput("password", e.target.value)}
-              className="px-4 py-3 rounded-md text-black"
+              className={`px-4 py-3 rounded-md ${isDarkMode ? 'text-white' : 'text-black'}`}
               allowClear
+              style={inputStyle}
               iconRender={(visible) =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
@@ -145,11 +155,12 @@ const LoginComponent = () => {
             <Button
               // type="button"
               title="login"
-              className={`w-full bg-[#ed7e23] text-black p-2 rounded-md hover:bg-[#ed7e23] ${
-                isButtonDisabled
-                  ? "cursor-not-allowed bg-gray-400 hover:bg-gray-300"
-                  : "cursor-pointer"
-              }`}
+              className={`w-full p-2 rounded-md transition-colors duration-300
+                ${isButtonDisabled
+                  ? "cursor-not-allowed bg-gray-500 text-black hover:bg-gray-300 hover:text-gray-500 font-medium"
+                  : "cursor-pointer bg-[#ed7e23] text-black hover:bg-[#ff9f4a] hover:text-gray-500"
+                }`}
+
               onClick={handleLoginSubmit}
               disabled={isButtonDisabled}
             >
